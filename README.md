@@ -5,9 +5,11 @@ Offers a quick way to track counter metrics reported with a key
 ### current support:
 only able to track a metric count reported based on a metric name/identifier in time buckets. 
 
-time bucket intervals can be configurable through an environmental variable APP_METRICS_TIME_BUCKET_INTERVAL:
+time bucket intervals can be configurable through an environmental variable APP_METRICS_TIME_BUCKET_INTERVAL
 
-days, hours and minutes
+Options: days, hours and minutes
+
+Default: hours
 
 refer internal/metrics/counter.go : init() function
 
