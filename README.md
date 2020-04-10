@@ -89,7 +89,7 @@ RESPONSE:
 
 ### get a metric
 
-to get current sum of your reported metric call using below sample
+to get current sum of your reported metric in current hour, call using below sample
 
 ```$xslt
 GET http://localhost:3333/metric/{metric Name, eg: users_logged_in}/sum
