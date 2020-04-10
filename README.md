@@ -2,10 +2,16 @@
 
 Offers a quick way to track counter metrics reported with a key
 
-current support:
-only able to track a metric count reported hourly basis based on a metric name/identifier 
+### current support:
+only able to track a metric count reported based on a metric name/identifier in time buckets. 
 
-## file structure
+time bucket intervals can be configurable through an environmental variable APP_METRICS_TIME_BUCKET_INTERVAL:
+
+days, hours and minutes
+
+refer internal/metrics/counter.go : init() function
+
+## File structure
 
 ```$xslt
 cmd/webapp/main.go          main file to initiate service 
@@ -62,7 +68,7 @@ docker build -t=github.com/ckalagara/truticket_metric_ticker:latest .
 
 ### Running docker image
 ```
-docker run -e APP_PORT=":3333" github.com/ckalagara/truticket_metric_ticker:latest
+docker run -e APP_PORT=":3333" -e APP_METRICS_TIME_BUCKET_INTERVAL="hours" github.com/ckalagara/truticket_metric_ticker:latest
 ```
 
 ## Usage
@@ -89,7 +95,7 @@ RESPONSE:
 
 ### get a metric
 
-to get current sum of your reported metric in current hour, call using below sample
+to get current sum of your reported metric in current time bucket(refer current support block at top of this page), call using below sample
 
 ```$xslt
 GET http://localhost:3333/metric/{metric Name, eg: users_logged_in}/sum

@@ -14,7 +14,7 @@ func GetRoutes() chi.Router {
 	logrus.Info("Initializing the routes...")
 	r := chi.NewRouter()
 
-	r.Get("/{key}/sum", GetMetricHandler)
+	r.Get("/{key}/sum", GetCurrentTimeBucketMetricHandler)
 	r.Post("/{key}", UpdateMetricHandler)
 
 	return r
@@ -24,14 +24,14 @@ type Payload struct {
 	Value interface{} `json:"value"`
 }
 
-// GetMetricHandler handle get metric request responds with sum of reported values in current hour bucket
-func GetMetricHandler(w http.ResponseWriter, r *http.Request) {
+// GetCurrentTimeBucketMetricHandler handle get metric request responds with sum of reported values in current time bucket
+func GetCurrentTimeBucketMetricHandler(w http.ResponseWriter, r *http.Request) {
 	metricKey := strings.TrimSpace(chi.URLParam(r, "key"))
 	if len(metricKey) == 0 {
 		http.Error(w, "Please provide a valid metric as part of path, eg: /metric/{key}.", http.StatusBadRequest)
 	}
 
-	val := metrics.GetMetric("counter", metricKey)
+	val := metrics.GetCurrentTimeBucketMetric("counter", metricKey)
 	w.Header().Set("Content-Type", "application/json")
 	writePayload(w, Payload{Value: math.Round(val)})
 
