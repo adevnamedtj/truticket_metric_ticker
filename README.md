@@ -1,9 +1,17 @@
 # truticket_metric_ticker
 
-Offer a quick way to track counter metrics reported with a key
+Offers a quick way to track counter metrics reported with a key
 
 current support:
 only able to track a metric count reported hourly basis based on a metric name/identifier 
+
+## file structure
+
+```$xslt
+cmd/webapp/main.go          main file to initiate service 
+cmd/webapp/routes/routes.go handles all the route configurations
+internal/metrics/counter.go handles the metric reporting
+```
 
 
 ## Getting Started
@@ -44,6 +52,17 @@ PASS
 ok      github.com/ckalagara/truticket_metric_ticker/internal/metrics   0.280s
 
 
+```
+
+# Dockerfile
+### Docker build
+```
+docker build -t=github.com/ckalagara/truticket_metric_ticker:latest .
+```
+
+### Running docker image
+```
+docker run -e APP_PORT=":3333" github.com/ckalagara/truticket_metric_ticker:latest
 ```
 
 ## Usage

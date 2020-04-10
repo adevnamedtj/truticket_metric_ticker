@@ -1,0 +1,29 @@
+#  The first stage container, for downloading dependencies for the application
+FROM golang:1.13-alpine as builder1
+RUN adduser -D appuser
+COPY go.mod /app/go.mod
+COPY go.sum /app/go.sum
+WORKDIR /app
+
+RUN go mod download
+
+#  The second stage container, for building the application
+FROM builder1 AS builder2
+COPY . /app
+WORKDIR /app/cmd/webapp
+
+RUN GOARCH=amd64 GOOS=linux go build --installsuffix cgo --ldflags="-s" -o webapp
+
+#  The third stage container, for running the application
+FROM alpine:latest
+
+COPY --from=builder2 /app/cmd/webapp/webapp /app/metrics
+
+## Add user and group and set /app to them
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN chown -R appuser:appgroup /app
+
+RUN apk add --no-cache ca-certificates
+WORKDIR /app
+
+ENTRYPOINT ["/app/metrics"]
