@@ -32,7 +32,7 @@ func init() {
 
 }
 
-// UpdateMetric takes a metric type, name and value and create/update the current hour bucket count for the metric and returns the current count
+// UpdateMetric takes a metric type, name and value and create/update the current time bucket(configured based on timeKeyLayout/timeBucket keys) count for the metric and returns the current count
 func UpdateMetric(metricType, metricName string, metricCount float64) (count float64) {
 
 	key := fmt.Sprintf("%s_%s_%s", metricType, metricName, getCurrentTimeBucketKey())
